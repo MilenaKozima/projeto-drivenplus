@@ -76,7 +76,8 @@ const LogoContainer = styled.div`
         font-weight: 700; 
     }
 `
-const InfoContainer = styled.div`
+
+ export const InfoContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 13px;

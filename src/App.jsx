@@ -19,7 +19,7 @@ function App() {
       <Route path='/' element={<LoginPage/>}/>
       <Route path='/sign-up' element={<RegistrationPage/>}/>
       <Route path='/subscriptions' element={<SubscriptionPage/>}/>
-      <Route path='/subscriptions/ID_DO_PLANO' element={<FormSubs/>}/>
+      <Route path='/subscriptions/:idPlano' element={<FormSubs/>}/>
       <Route path='/home/ID_DO_PLANO' element={<HomePage/>}/>
     
     </Routes>

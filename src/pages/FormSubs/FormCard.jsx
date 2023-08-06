@@ -14,34 +14,34 @@ export default function FormCard() {
 
     function openModal() {
         setIsModalOpen(true);
-      }
-    
-      function closeModal() {
+    }
+
+    function closeModal() {
         setIsModalOpen(false);
-      }
+    }
 
     function card(e) {
 
-        // e.preventDefault();
-        // const user = {
-        //     email: email,
-        //     password: password
-        // }
+        e.preventDefault();
+        const user = {
+            email: email,
+            password: password
+        }
 
-        // const promise = axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/auth/login", user);
-        // promise.then(resp => {
-        //     if (resp.data.membership === null) {
-        //         navigate('/subscriptions')
-        //         console.log(resp.data);
-        //         const { id, name, image, token } = resp.data;
-        //         setUser({ id, name, image, token });
-        //     } else {
-        //         navigate('/subscriptions/ID_DO_PLANO')
-        //     }
-        // })
-        // promise.catch(erro => {
-        //     alert(erro.response.data.message)
-        // })
+        const promise = axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/auth/login", user);
+        promise.then(resp => {
+            if (resp.data.membership === null) {
+                navigate('/subscriptions')
+                console.log(resp.data);
+                const { id, name, image, token } = resp.data;
+                setUser({ id, name, image, token });
+            } else {
+                navigate('/subscriptions/ID_DO_PLANO')
+            }
+        })
+        promise.catch(erro => {
+            alert(erro.response.data.message)
+        })
 
     }
 

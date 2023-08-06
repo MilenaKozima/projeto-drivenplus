@@ -1,11 +1,13 @@
 import { styled } from 'styled-components';
-import LogoAmarelo from '../../assets/logo-plano-amarelo.png'
 
-export default function Planos(){
+export default function Planos({plano}){
+
+    const {image, price} = plano;
+
     return(
         <ButtonSty>
-            <img src={LogoAmarelo} alt="" />
-            <p>R$ 39,99</p>
+            <img src={image} alt="" />
+            <p>R$ {price}</p>
         </ButtonSty>
     );
 }
