@@ -5,13 +5,16 @@ import RegistrationPage from './pages/RegistrationPage/RegistrationPage'
 import SubscriptionPage from './pages/SubscriptionPage/SubscriptionPage'
 import HomePage from './pages/HomePage/HomePage'
 import FormSubs from './pages/FormSubs/FormSubs'
+import { UserContext } from './contexts/UserContext'
 
 
 function App() {
 
+  const [user, setUser] = useState({});
 
   return (
     <BrowserRouter>
+    <UserContext.Provider value={{user, setUser}}>
     <Routes>
       <Route path='/' element={<LoginPage/>}/>
       <Route path='/sign-up' element={<RegistrationPage/>}/>
@@ -20,6 +23,7 @@ function App() {
       <Route path='/home/ID_DO_PLANO' element={<HomePage/>}/>
     
     </Routes>
+    </UserContext.Provider>
     </BrowserRouter>
 
   )

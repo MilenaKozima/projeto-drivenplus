@@ -2,11 +2,14 @@ import { styled } from "styled-components";
 import logoBranca from '../../assets/logo-plano-branco.png'
 import tasklist from '../../assets/fluent_clipboard-task-list-rtl-20-regular.png';
 import arrow from '../../assets/fa-solid_arrow-left.png';
+import { Link} from "react-router-dom"
 
 export default function FormSubs(){
     return(
         <Teste>
-        <img className="arrow-img" src={arrow} alt="" />
+            <Link to={'/subscriptions'}>
+            <img className="arrow-img" src={arrow} alt="" />
+            </Link>
         <FormSubsContainer>
         <LogoContainer>
             <img src={logoBranca} alt="" />

@@ -1,9 +1,12 @@
 import styled from "styled-components"
 import LogoHome from '../../assets/logo-home.png';
 import FormLogin from "./FormLogin";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export default function LoginPage(){
+
+
+    
     return(
         <LoginContainer>
             <LogoHomeContainer>
