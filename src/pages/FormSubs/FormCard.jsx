@@ -2,14 +2,19 @@ import { useState } from "react";
 import { styled } from "styled-components";
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
-export default function FormCard() {
+export default function FormCard({plano}) {
+
+    const {name, price, id} = plano;
 
     const [nomeip, setNomeip] = useState("");
     const [cartao, setcartao] = useState("");
     const [codseg, setCodseg] = useState("");
     const [validade, setValidade] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
     function openModal() {
@@ -23,21 +28,23 @@ export default function FormCard() {
     function card(e) {
 
         e.preventDefault();
-        const user = {
-            email: email,
-            password: password
+
+        const config = {
+            headers: { Authorization: `Bearer ${user.token}` }
         }
 
-        const promise = axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/auth/login", user);
+        const plan = {
+            membershipId: id,
+            cardName: nomeip,
+            cardNumber: cartao,
+            securityNumber: codseg,
+            expirationDate: validade
+        }
+        console.log(plan);
+
+        const promise = axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", plan, config);
         promise.then(resp => {
-            if (resp.data.membership === null) {
-                navigate('/subscriptions')
-                console.log(resp.data);
-                const { id, name, image, token } = resp.data;
-                setUser({ id, name, image, token });
-            } else {
-                navigate('/subscriptions/ID_DO_PLANO')
-            }
+            navigate('/home');
         })
         promise.catch(erro => {
             alert(erro.response.data.message)
@@ -81,7 +88,7 @@ export default function FormCard() {
                     value={validade}
                 />
             </BotaoContainer>
-            <button onClick={openModal}>
+            <button type="button" onClick={openModal}>
                 ASSINAR
             </button>
 
@@ -90,7 +97,11 @@ export default function FormCard() {
             <ModalWrapper isOpen={isModalOpen}>
                 <ModalContent>
                     <CloseButton onClick={closeModal}>&times;</CloseButton>
-                    <p>Some text in the Modal..</p>
+                    <p>Tem certeza que deseja assinar o plano {name} (R$ {price})</p>
+                    <div>
+                    <button className="nao">NÃO</button>
+                    <button type="submit" className="sim">SIM</button>
+                    </div>
                 </ModalContent>
             </ModalWrapper>
         </FormC>
@@ -122,6 +133,20 @@ const FormC = styled.form`
         font-size: 14px;
         color: #FFFFFF;
     }
+    .nao{
+        background-color: #CECECE;
+        width: 95px;
+        height: 52px;
+        color: #FFFFFF;
+        font-family: 'Roboto';
+    }
+    .sim{
+        background-color: #FF4791;
+        width: 95px;
+        height: 52px;
+        color: #FFFFFF;
+        font-family: 'Roboto';
+    }
 `
 const BotaoContainer = styled.div`
     width: 299px;
@@ -143,7 +168,7 @@ const ModalWrapper = styled.div`
   display: ${props => (props.isOpen ? 'block' : 'none')};
   position: fixed;
   z-index: 1;
-  padding-top: 100px;
+  padding-top: 300px;
   left: 0;
   top: 0;
   width: 100%;
@@ -153,11 +178,23 @@ const ModalWrapper = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background-color: #fefefe;
+  background-color:#FFFFFF;
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  border-radius: 12px;
+  width: 60%;
+  div{
+    display: flex;
+    justify-content: space-between;
+  }
+  p{
+    font-family: 'Roboto';
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 const CloseButton = styled.span`

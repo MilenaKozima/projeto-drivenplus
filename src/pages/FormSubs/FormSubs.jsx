@@ -5,8 +5,33 @@ import arrow from '../../assets/fa-solid_arrow-left.png';
 import bill from "../../assets/fa-solid_money-bill-wave.png"
 import { Link } from "react-router-dom";
 import FormCard from "./FormCard";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
 export default function FormSubs() {
+
+    const parametro = useParams();
+    console.log(parametro);
+    const [planos, setPlanos] = useState([]);
+    const { user } = useContext(UserContext);
+
+    const config = {
+        headers: { Authorization: `Bearer ${user.token}` }
+    }
+
+    useEffect(() => {
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions/memberships/${parametro.idPlano}`, config)
+
+        promise.then(resp => {
+            console.log(resp.data);
+            setPlanos(resp.data)
+        });
+        promise.catch(erro => console.log(erro.response.data))
+    }, [])
+
     return (
         <Teste>
             <Link to={'/subscriptions'}>
@@ -14,27 +39,28 @@ export default function FormSubs() {
             </Link>
             <FormSubsContainer>
                 <LogoContainer>
-                    <img src={logoBranca} alt="" />
-                    <p>Driven Plus</p>
+                    <img src={planos.image} alt="" />
+                    <p>{planos.name}</p>
                 </LogoContainer>
                 <InfoContainer>
 
                     <BeneficioPreco>
                         <div>
-                        <img src={tasklist} alt="" />
-                        <h1>Benefícios</h1>
+                            <img src={tasklist} alt="" />
+                            <h1>Benefícios</h1>
                         </div>
-                        <p>1. Brindes exclusivos</p>
-                        <p>2. Materiais bônus de web</p>
+                        {planos.perks && planos.perks.map((per) => (
+                            <p key={per.id}>{per.id}. {per.title}</p>
+                        ))}
 
                         <div>
-                        <img src={bill} alt="" />
-                        <h1> Preço</h1>
+                            <img src={bill} alt="" />
+                            <h1> Preço</h1>
                         </div>
-                        <p>R$ 39,99 cobrados mensalmente</p>
+                        <p>R$ {planos.price} cobrados mensalmente</p>
                     </BeneficioPreco>
 
-                    <FormCard/>
+                    <FormCard plano={planos}/>
 
                 </InfoContainer>
             </FormSubsContainer>
@@ -77,7 +103,7 @@ const LogoContainer = styled.div`
     }
 `
 
- export const InfoContainer = styled.div`
+export const InfoContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 13px;

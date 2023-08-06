@@ -20,7 +20,7 @@ function App() {
       <Route path='/sign-up' element={<RegistrationPage/>}/>
       <Route path='/subscriptions' element={<SubscriptionPage/>}/>
       <Route path='/subscriptions/:idPlano' element={<FormSubs/>}/>
-      <Route path='/home/ID_DO_PLANO' element={<HomePage/>}/>
+      <Route path='/home' element={<HomePage/>}/>
     
     </Routes>
     </UserContext.Provider>
