@@ -25,10 +25,11 @@ export default function FormLogin(){
         const promise = axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/auth/login", user);
         promise.then(resp => {
             if(resp.data.membership===null){
-            navigate('/subscriptions')
             console.log(resp.data);
             const {id, name, image, token} = resp.data;
             setUser({id, name, image, token});
+            localStorage.setItem("user", JSON.stringify({id, name, image, token}))
+            navigate('/subscriptions')
         } else {
             const {id, name, image, perks} = resp.data.membership;
             setPlan({id, name, image, perks});

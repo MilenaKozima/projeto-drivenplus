@@ -11,7 +11,8 @@ import { PlanContext } from './contexts/PlanContext'
 
 function App() {
 
-  const [user, setUser] = useState({});
+  const lsUser = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(lsUser);
   const [plan, setPlan] = useState({});
 
   return (
