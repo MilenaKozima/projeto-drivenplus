@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
+import { PlanContext } from "../../contexts/PlanContext";
 
 export default function FormCard({plano}) {
 
@@ -15,6 +16,7 @@ export default function FormCard({plano}) {
     const [validade, setValidade] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { user } = useContext(UserContext);
+    const {plan, setPlan} = useContext(PlanContext);
     const navigate = useNavigate();
 
     function openModal() {
@@ -33,18 +35,21 @@ export default function FormCard({plano}) {
             headers: { Authorization: `Bearer ${user.token}` }
         }
 
-        const plan = {
+        const plan1 = {
             membershipId: id,
             cardName: nomeip,
             cardNumber: cartao,
             securityNumber: codseg,
             expirationDate: validade
         }
-        console.log(plan);
 
-        const promise = axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", plan, config);
+        const promise = axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", plan1, config);
         promise.then(resp => {
-            navigate('/home');
+                console.log(resp.data);
+                const {id, name, image, perks} = resp.data.membership;
+                setPlan({id, name, image, perks});
+                console.log(plan);
+                navigate('/home');
         })
         promise.catch(erro => {
             alert(erro.response.data.message)
@@ -99,7 +104,7 @@ export default function FormCard({plano}) {
                     <CloseButton onClick={closeModal}>&times;</CloseButton>
                     <p>Tem certeza que deseja assinar o plano {name} (R$ {price})</p>
                     <div>
-                    <button className="nao">NÃO</button>
+                    <button type="button" onClick={closeModal} className="nao">NÃO</button>
                     <button type="submit" className="sim">SIM</button>
                     </div>
                 </ModalContent>

@@ -1,24 +1,52 @@
 import { styled } from "styled-components";
 import logoamarela from '../../assets/logo-plano-amarelo.png';
 import usuario from '../../assets/fa-solid_user-circle.png';
+import { PlanContext } from "../../contexts/PlanContext";
+import { useContext } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../contexts/UserContext";
 
 export default function HomePage() {
+
+    const { plan } = useContext(PlanContext);
+    const { user } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    function del() {
+        const config = {
+            headers: { Authorization: `Bearer ${user.token}` }
+        }
+
+        const promise = axios.delete("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", config);
+        promise.then(resp => {
+            navigate('/subscriptions');
+        })
+        promise.catch(erro => {
+            alert(erro.response.data.message)
+        })
+    }
+
     return (
         <HomePageContainer>
             <TopoHomeContainer>
-                <img src={logoamarela} alt="" />
+                <img src={plan.image} alt="" />
                 <img src={usuario} alt="" />
             </TopoHomeContainer>
-            <OpcContainer>
-                <p>Olá, fulano</p>
-                <button>Solicitar brindes</button>
-                <button>Materiais bônus de web</button>
-                <button>AUlas bônus de tech</button>
-                <button>Mentoorias personalizadas</button>
+            <OpcContainer key={plan.id}>
+                <p>Olá, {plan.name}</p>
+                {plan && plan.perks && plan.perks.map(b => (
+                    <a href={b.link}>
+                        <button>{b.title}</button>
+                    </a>
+                ))}
             </OpcContainer>
             <OpcBaixo>
-                <button>Mudar plano</button>
-                <button>Cancelar plano</button>
+                <Link to="/subscriptions">
+                    <button >Mudar plano</button>
+                </Link>
+                <button onClick={del}>Cancelar plano</button>
             </OpcBaixo>
         </HomePageContainer>
     );

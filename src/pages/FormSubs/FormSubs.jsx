@@ -14,7 +14,6 @@ import { UserContext } from "../../contexts/UserContext";
 export default function FormSubs() {
 
     const parametro = useParams();
-    console.log(parametro);
     const [planos, setPlanos] = useState([]);
     const { user } = useContext(UserContext);
 

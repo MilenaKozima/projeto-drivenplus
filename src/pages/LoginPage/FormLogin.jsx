@@ -4,12 +4,14 @@ import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios";
+import { PlanContext } from "../../contexts/PlanContext";
 
 export default function FormLogin(){
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const {user, setUser} = useContext(UserContext);
+    const {plan, setPlan} = useContext(PlanContext);
     const navigate = useNavigate();
 
     function login(e) {
@@ -28,7 +30,11 @@ export default function FormLogin(){
             const {id, name, image, token} = resp.data;
             setUser({id, name, image, token});
         } else {
-            navigate('/subscriptions/ID_DO_PLANO')
+            const {id, name, image, perks} = resp.data.membership;
+            setPlan({id, name, image, perks});
+            const {token} = resp.data;
+            setUser({token});
+            navigate('/home')
         }
         })
         promise.catch(erro => {

@@ -6,15 +6,18 @@ import SubscriptionPage from './pages/SubscriptionPage/SubscriptionPage'
 import HomePage from './pages/HomePage/HomePage'
 import FormSubs from './pages/FormSubs/FormSubs'
 import { UserContext } from './contexts/UserContext'
+import { PlanContext } from './contexts/PlanContext'
 
 
 function App() {
 
   const [user, setUser] = useState({});
+  const [plan, setPlan] = useState({});
 
   return (
     <BrowserRouter>
     <UserContext.Provider value={{user, setUser}}>
+    <PlanContext.Provider value={{plan, setPlan}}>
     <Routes>
       <Route path='/' element={<LoginPage/>}/>
       <Route path='/sign-up' element={<RegistrationPage/>}/>
@@ -23,6 +26,7 @@ function App() {
       <Route path='/home' element={<HomePage/>}/>
     
     </Routes>
+    </PlanContext.Provider>
     </UserContext.Provider>
     </BrowserRouter>
 
